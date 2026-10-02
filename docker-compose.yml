@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: security-platform-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: security_platform
+      POSTGRES_USER: security
+      POSTGRES_PASSWORD: security_dev
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U security -d security_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
